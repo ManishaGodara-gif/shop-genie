@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #f8fafc; color: #1e293b; }
+a { text-decoration: none; color: inherit; }
+button { font-family: 'DM Sans', sans-serif; cursor: pointer; border: none; outline: none; }
+
+input, select, textarea {
+    font-family: 'DM Sans', sans-serif;
+    width: 100%; padding: 0.7rem 1rem;
+    border: 1.5px solid #e2e8f0; border-radius: 6px;
+    background: #fff; font-size: 0.875rem; color: #1e293b;
+    transition: border-color 0.2s;
+}
+input:focus, select:focus, textarea:focus {
+    outline: none; border-color: #1a2b4a;
+}

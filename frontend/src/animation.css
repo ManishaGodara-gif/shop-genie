@@ -1,0 +1,146 @@
+/* ═══════════════════════════════════════════════════════════
+   SHOP GENIE — ANIMATIONS & TRANSITIONS
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── Keyframes ──────────────────────────────────────────────*/
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-36px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(36px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.05); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes starPop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+@keyframes progressFill {
+  from { width: 0%; }
+  to   { width: var(--target-width); }
+}
+
+@keyframes timelineDraw {
+  from { height: 0%; }
+  to   { height: 100%; }
+}
+
+/* ─── Utility Animation Classes ─────────────────────────────*/
+.animate-fade-up      { animation: fadeUp      0.55s ease both; }
+.animate-fade-in      { animation: fadeIn      0.45s ease both; }
+.animate-slide-left   { animation: slideInLeft 0.5s  ease both; }
+.animate-slide-right  { animation: slideInRight 0.5s ease both; }
+.animate-scale-in     { animation: scaleIn     0.45s ease both; }
+.animate-float        { animation: float       3s ease-in-out infinite; }
+.animate-pulse        { animation: pulse       2s ease-in-out infinite; }
+
+/* Staggered children delays */
+.stagger > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger > *:nth-child(2) { animation-delay: 0.12s; }
+.stagger > *:nth-child(3) { animation-delay: 0.19s; }
+.stagger > *:nth-child(4) { animation-delay: 0.26s; }
+.stagger > *:nth-child(5) { animation-delay: 0.33s; }
+.stagger > *:nth-child(6) { animation-delay: 0.40s; }
+.stagger > *:nth-child(7) { animation-delay: 0.47s; }
+.stagger > *:nth-child(8) { animation-delay: 0.54s; }
+
+/* ─── Skeleton Loading ───────────────────────────────────────*/
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 6px;
+}
+
+/* ─── Page Transition Wrapper ────────────────────────────────*/
+.page-enter {
+  animation: fadeUp 0.4s ease both;
+}
+
+/* ─── Hover lift effect ──────────────────────────────────────*/
+.hover-lift {
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.13);
+}
+
+/* ─── Smooth underline link ──────────────────────────────────*/
+.underline-link {
+  position: relative;
+  display: inline-block;
+}
+.underline-link::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 0; height: 2px;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+.underline-link:hover::after { width: 100%; }
+
+/* ─── Button ripple ──────────────────────────────────────────*/
+.btn-primary, .btn-accent {
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after, .btn-accent::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.15);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.btn-primary:hover::after, .btn-accent:hover::after { opacity: 1; }
+
+/* ─── Spinner ────────────────────────────────────────────────*/
+.spinner {
+  width: 22px; height: 22px;
+  border: 2.5px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
