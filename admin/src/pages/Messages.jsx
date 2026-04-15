@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
 import { toast } from "react-toastify";
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const Messages = ({ token }) => {
   const [messages, setMessages] = useState([]);
@@ -9,42 +10,145 @@ const Messages = ({ token }) => {
 
   const fetchMessages = async () => {
     try {
-      const res = await axios.get(`${backendUrl}/api/contact/messages`, {
-        headers: { token },
-      });
-      if (res.data.success) setMessages(res.data.messages);
-      else toast.error(res.data.message);
-    } catch {
-      toast.error("Failed to load messages.");
+      const res = await axios.get(
+        `${backendUrl}/api/contact/messages`,
+        { headers: { token } }
+      );
+
+      if (res.data.success && res.data.messages) {
+        setMessages([...res.data.messages].reverse()); // safe reverse
+      } else {
+        setMessages([]);
+        toast.error(res.data.message || "No messages found");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to load messages");
+      setMessages([]);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => { fetchMessages(); }, []);
+  useEffect(() => {
+    fetchMessages();
+  }, []);
 
   return (
-    <div className="w-full">
-      <h2 className="text-xl font-semibold mb-4">Contact Messages</h2>
+    <div style={{ padding: "20px" }}>
 
+      {/* Header */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <h2 style={{ fontSize: "20px", color: "#1a2b4a" }}>
+          Messages ({messages.length})
+        </h2>
+
+        <button
+          onClick={fetchMessages}
+          style={{
+            background: "#f1f5f9",
+            border: "1px solid #e2e8f0",
+            padding: "6px 12px",
+            borderRadius: "6px",
+            cursor: "pointer",
+          }}
+        >
+          🔄 Refresh
+        </button>
+      </div>
+
+      {/* Loading */}
       {loading ? (
-        <p className="text-gray-500">Loading...</p>
+        <p style={{ color: "#64748b" }}>Loading...</p>
       ) : messages.length === 0 ? (
-        <p className="text-gray-500">No messages yet.</p>
+        <p style={{ textAlign: "center", color: "#94a3b8" }}>
+          No messages yet.
+        </p>
       ) : (
-        <div className="flex flex-col gap-4">
+
+        <div>
           {messages.map((msg) => (
-            <div key={msg._id} className="border rounded-lg p-4 bg-white shadow-sm">
-              <div className="flex justify-between items-center mb-1">
-                <p className="font-semibold text-gray-800">{msg.name}
-                  <span className="text-gray-400 font-normal text-sm ml-2">&lt;{msg.email}&gt;</span>
+            <div
+              key={msg._id}
+              style={{
+                background: "#fff",
+                border: "1px solid #e2e8f0",
+                borderRadius: "10px",
+                padding: "16px",
+                marginBottom: "12px",
+                borderLeft: "4px solid #3b82f6",
+              }}
+            >
+
+              {/* Top Row */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "10px",
+                }}
+              >
+                <p style={{ fontSize: "12px", color: "#94a3b8" }}>
+                  #{msg._id?.toString().slice(-6).toUpperCase()} ·{" "}
+                  {msg.createdAt
+                    ? new Date(msg.createdAt).toLocaleDateString()
+                    : ""}
                 </p>
-                <p className="text-xs text-gray-400">
-                  {new Date(msg.createdAt).toLocaleString()}
+
+                <span
+                  style={{
+                    background: "#dcfce7",
+                    color: "#16a34a",
+                    padding: "2px 8px",
+                    borderRadius: "20px",
+                    fontSize: "11px",
+                  }}
+                >
+                  New
+                </span>
+              </div>
+
+              {/* Subject */}
+              <p
+                style={{
+                  fontWeight: "600",
+                  marginBottom: "6px",
+                  color: "#334155",
+                }}
+              >
+                {msg.subject || "No Subject"}
+              </p>
+
+              {/* From Section */}
+              <div
+                style={{
+                  background: "#f9fafb",
+                  padding: "8px",
+                  borderRadius: "6px",
+                  marginBottom: "8px",
+                }}
+              >
+                <p style={{ fontSize: "12px", color: "#64748b" }}>From</p>
+                <p style={{ fontSize: "14px" }}>
+                  {msg.name || "Unknown"}
+                </p>
+                <p style={{ fontSize: "12px", color: "#64748b" }}>
+                  {msg.email || "No Email"}
                 </p>
               </div>
-              <p className="text-sm font-medium text-indigo-600 mb-1">{msg.subject}</p>
-              <p className="text-sm text-gray-600">{msg.message}</p>
+
+              {/* Message */}
+              <p style={{ fontSize: "14px", color: "#475569" }}>
+                {msg.message || "No Message"}
+              </p>
+
             </div>
           ))}
         </div>
